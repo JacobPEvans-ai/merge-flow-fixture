@@ -1,0 +1,10 @@
+---
+namespace: jpe_fixture
+name: merge_flow
+version: 0.0.1
+readme: README.md
+authors:
+  - fixture
+description: Merge-flow fixture collection.
+license:
+  - MIT

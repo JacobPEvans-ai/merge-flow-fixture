@@ -1,0 +1,33 @@
+name: CI Fix
+
+on:
+  workflow_run:
+    workflows: ["CI Gate"]
+    types: [completed]
+  # The reusable acts only on the ci-fix label.
+  pull_request:
+    types: [labeled]
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  ci-fix:
+    uses: JacobPEvans/.github-ai/.github/workflows/cc-ci-fix.yml@topic/merge-flow-r2 # fixture: follows the topic branch
+    with:
+      agent: openhands
+      local_model: medium
+      # Every gate completion counts against the limit, passing runs included.
+      daily_run_limit: "100"
+      repo_context: "Upstream merge-flow fixture; nothing here is production."
+      ci_structure: "CI Gate aggregates Markdown Lint and File Size into the Merge Gate check."
+    secrets:
+      LLM_ROUTER_BASE_URL: ${{ secrets.LLM_ROUTER_BASE_URL }}
+      LLM_ROUTER_API_KEY: ${{ secrets.LLM_ROUTER_API_KEY }}
+      OPENBAO_ADDR: ${{ secrets.OPENBAO_ADDR }}
+      GH_APP_CLAUDE_BOT_ID: ${{ secrets.GH_APP_CLAUDE_BOT_ID }}
+      GH_APP_CLAUDE_BOT_PRIVATE_KEY: ${{ secrets.GH_APP_CLAUDE_BOT_PRIVATE_KEY }}
