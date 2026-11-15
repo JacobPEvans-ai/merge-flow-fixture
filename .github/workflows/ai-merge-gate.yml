@@ -14,6 +14,8 @@ permissions:
 jobs:
   gate:
     uses: JacobPEvans/.github-ai/.github/workflows/_ai-merge-gate.yml@topic/merge-flow-r2 # fixture: follows the topic branch
+    with:
+      runner_label: ${{ github.event.pull_request.head.repo.full_name == github.repository && 'review' || 'ubuntu-latest' }}
     secrets:
       LLM_ROUTER_BASE_URL: ${{ secrets.LLM_ROUTER_BASE_URL }}
       LLM_ROUTER_API_KEY: ${{ secrets.LLM_ROUTER_API_KEY }}
